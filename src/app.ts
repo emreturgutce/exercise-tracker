@@ -4,8 +4,8 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import rootRouter from './routes';
-import notFound from './middleware/notFound';
-import errorHandler from './middleware/errorHandler';
+import notFound from './middleware/not-found';
+import errorHandler from './middleware/error-handler';
 import 'colors';
 
 dotenv.config();
