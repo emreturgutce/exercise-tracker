@@ -6,16 +6,22 @@ const sequelize = new Sequelize({
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
   dialect: 'mysql',
-  logging: false,
+  logging:
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'
+      ? false
+      : console.log,
 });
 
 (async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ force: true });
-    console.log(`Connected to MySQL`.cyan.bold);
-  } catch (err) {
-    console.log(`Could not Connect to MySQL: ${err}`.red.bold);
+    await sequelize.sync();
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Connected to MySQL`.cyan.bold);
+    }
+  } catch (error) {
+    throw new Error('Unable to connect to database...');
   }
 })();
 
